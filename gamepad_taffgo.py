@@ -101,6 +101,16 @@ def main(port='COM7'):
     block_6 = False
     block_7 = False
     
+    # Hidden functionality.
+    block_8 = False
+    block_9 = False
+    block_10 = False
+    block_11 = False
+    block_12 = False
+    block_13 = False
+    block_14 = False
+    block_15 = False
+    
     # Preset setting/configuration blocking -- so that we won't overflow the serial.
     block_set_0 = False
     block_set_1 = False
@@ -110,6 +120,16 @@ def main(port='COM7'):
     block_set_5 = False
     block_set_6 = False
     block_set_7 = False
+    
+    # Hidden preset setting/configuration blocking.
+    block_set_8 = False
+    block_set_9 = False
+    block_set_10 = False
+    block_set_11 = False
+    block_set_12 = False
+    block_set_13 = False
+    block_set_14 = False
+    block_set_15 = False
     
     # Blocking for turning on/off the PTZ camera.
     block_power_on = False
@@ -191,7 +211,7 @@ def main(port='COM7'):
             # print(_L1, _L2, _R1, _R2, _MENU, _START, _BTN_JOY_L, _BTN_JOY_R, _BTN_A, _BTN_B, _BTN_X, _BTN_Y, _ABS_HAT0, _ABS_JOY_L_X, _ABS_JOY_L_Y, _ABS_JOY_R_X, _ABS_JOY_R_Y)
 
             # Recalling presets: right hand (presets 0-3)
-            if _MENU == 0:
+            if _MENU == 0 and _START == 0:
                 
                 if _BTN_Y == 1:
                     if not block_0:
@@ -234,7 +254,7 @@ def main(port='COM7'):
                         block_3 = False
 
             # Recalling presets: left hand (presets 4-7)
-            if _MENU == 0:
+            if _MENU == 0 and _START == 0:
                 
                 if _ABS_HAT0 == (0, 1):
                     if not block_4:
@@ -274,6 +294,89 @@ def main(port='COM7'):
                     if block_7:
                         print("Dispatched command: RECALLING PRESET 7 UNBLOCKING")
                         block_7 = False
+            
+            # Recalling presets: hidden (presets 8-...)
+            if _MENU == 0 and _START == 1:
+                
+                if _BTN_Y == 1:
+                    if not block_8:
+                        print("Dispatched command: RECALLING PRESET 8")
+                        cam.preset_recall(8)
+                        block_8 = True
+                elif _BTN_Y == 0:
+                    if block_8:
+                        print("Dispatched command: RECALLING PRESET 8 UNBLOCKING")
+                        block_8 = False
+                
+                if _BTN_B == 1:
+                    if not block_9:
+                        print("Dispatched command: RECALLING PRESET 9")
+                        cam.preset_recall(9)
+                        block_9 = True
+                elif _BTN_B == 0:
+                    if block_9:
+                        print("Dispatched command: RECALLING PRESET 9 UNBLOCKING")
+                        block_9 = False
+                
+                if _BTN_A == 1:
+                    if not block_10:
+                        print("Dispatched command: RECALLING PRESET 10")
+                        cam.preset_recall(10)
+                        block_10 = True
+                elif _BTN_A == 0:
+                    if block_10:
+                        print("Dispatched command: RECALLING PRESET 10 UNBLOCKING")
+                        block_10 = False
+                
+                if _BTN_X == 1:
+                    if not block_11:
+                        print("Dispatched command: RECALLING PRESET 11")
+                        cam.preset_recall(11)
+                        block_11 = True
+                elif _BTN_X == 0:
+                    if block_11:
+                        print("Dispatched command: RECALLING PRESET 11 UNBLOCKING")
+                        block_11 = False
+            
+            if _MENU == 0 and _START == 1:
+                if _ABS_HAT0 == (0, 1):
+                    if not block_12:
+                        print("Dispatched command: RECALLING PRESET 12")
+                        cam.preset_recall(12)
+                        block_12 = True
+                
+                if _ABS_HAT0 == (1, 0):
+                    if not block_13:
+                        print("Dispatched command: RECALLING PRESET 13")
+                        cam.preset_recall(13)
+                        block_13 = True
+                        
+                if _ABS_HAT0 == (0, -1):
+                    if not block_14:
+                        print("Dispatched command: RECALLING PRESET 14")
+                        cam.preset_recall(14)
+                        block_14 = True
+                        
+                if _ABS_HAT0 == (-1, 0):
+                    if not block_15:
+                        print("Dispatched command: RECALLING PRESET 15")
+                        cam.preset_recall(15)
+                        block_15 = True
+                
+                # Reset/ground state.
+                if _ABS_HAT0 == (0, 0):
+                    if block_12:
+                        print("Dispatched command: RECALLING PRESET 12 UNBLOCKING")
+                        block_12 = False
+                    if block_13:
+                        print("Dispatched command: RECALLING PRESET 13 UNBLOCKING")
+                        block_13 = False
+                    if block_14:
+                        print("Dispatched command: RECALLING PRESET 14 UNBLOCKING")
+                        block_14 = False
+                    if block_15:
+                        print("Dispatched command: RECALLING PRESET 15 UNBLOCKING")
+                        block_15 = False
 
             # Setting/assigning presets: right hand (presets 0-3)
             if _MENU == 1:
@@ -358,20 +461,106 @@ def main(port='COM7'):
                     if block_set_7:
                         print("Dispatched command: OVERWRITING PRESET 7 UNBLOCKING")
                         block_set_7 = False
-                        
-            # Turning off the camera.
+            
+            # Setting/assigning presets: hidden (presets 8-...)
             if _MENU == 1 and _START == 1:
-                if not block_power_off and cam.get_power() == 1:
+                
+                if _BTN_Y == 1:
+                    if not block_set_8:
+                        print("Dispatched command: OVERWRITING PRESET 8")
+                        cam.preset_set(8)
+                        block_set_8 = True
+                elif _BTN_Y == 0:
+                    if block_set_8:
+                        print("Dispatched command: OVERWRITING PRESET 8 UNBLOCKING")
+                        block_set_8 = False
+                
+                if _BTN_B == 1:
+                    if not block_set_9:
+                        print("Dispatched command: OVERWRITING PRESET 9")
+                        cam.preset_set(9)
+                        block_set_9 = True
+                elif _BTN_B == 0:
+                    if block_set_9:
+                        print("Dispatched command: OVERWRITING PRESET 9 UNBLOCKING")
+                        block_set_9 = False
+                
+                if _BTN_A == 1:
+                    if not block_set_10:
+                        print("Dispatched command: OVERWRITING PRESET 10")
+                        cam.preset_set(10)
+                        block_set_10 = True
+                elif _BTN_A == 0:
+                    if block_set_10:
+                        print("Dispatched command: OVERWRITING PRESET 10 UNBLOCKING")
+                        block_set_10 = False
+                
+                if _BTN_X == 1:
+                    if not block_set_11:
+                        print("Dispatched command: OVERWRITING PRESET 11")
+                        cam.preset_set(11)
+                        block_set_11 = True
+                elif _BTN_X == 0:
+                    if block_set_11:
+                        print("Dispatched command: OVERWRITING PRESET 11 UNBLOCKING")
+                        block_set_11 = False
+            
+            if _MENU == 1 and _START == 1:    
+                if _ABS_HAT0 == (0, 1):
+                    if not block_set_12:
+                        print("Dispatched command: OVERWRITING PRESET 12")
+                        cam.preset_set(12)
+                        block_set_12 = True
+                
+                if _ABS_HAT0 == (1, 0):
+                    if not block_set_13:
+                        print("Dispatched command: OVERWRITING PRESET 13")
+                        cam.preset_set(13)
+                        block_set_13 = True
+                
+                if _ABS_HAT0 == (0, -1):
+                    if not block_set_14:
+                        print("Dispatched command: OVERWRITING PRESET 14")
+                        cam.preset_set(14)
+                        block_set_14 = True
+                    
+                if _ABS_HAT0 == (-1, 0):
+                    if not block_set_15:
+                        print("Dispatched command: OVERWRITING PRESET 15")
+                        cam.preset_set(15)
+                        block_set_15 = True
+                
+                # Reset/ground state.
+                if _ABS_HAT0 == (0, 0):
+                    if block_set_12:
+                        print("Dispatched command: OVERWRITING PRESET 12 UNBLOCKING")
+                        block_set_12 = False
+                    if block_set_13:
+                        print("Dispatched command: OVERWRITING PRESET 13 UNBLOCKING")
+                        block_set_13 = False
+                    if block_set_14:
+                        print("Dispatched command: OVERWRITING PRESET 14 UNBLOCKING")
+                        block_set_14 = False
+                    if block_set_15:
+                        print("Dispatched command: OVERWRITING PRESET 15 UNBLOCKING")
+                        block_set_15 = False
+            
+            # Turning off the camera.
+            if _BTN_JOY_L == 1 and _BTN_JOY_R == 1 and _START == 1:
+                #print("Why?")
+                #print(cam.get_power())
+                #print("Halp")
+                if not block_power_off:# and cam.get_power() == 1:
                     print("Dispatched command: POWER OFF")
                     cam.power(0)
                     block_power_off = True
-            elif _MENU == 0 or _START == 0:
+            elif _BTN_JOY_L == 0 and _BTN_JOY_R == 0 or _START == 0:
                 if block_power_off:
                     print("Dispatched command: POWER OFF UNBLOCKING")
                     block_power_off = False
             
             # Turning on the camera.
-            if _MENU == 0 and _START == 1:
+            if _MENU == 0 and _START == 2:
                 if not block_power_on and cam.get_power() == 0:
                     print("Dispatched command: POWER ON")
                     
